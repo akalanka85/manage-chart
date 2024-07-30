@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import Highcharts, { SeriesOptionsType } from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { Order } from '../../modals/order';
+import { Chart } from '../../modals/chart';
 
 @Component({
   selector: 'app-order-chart',
@@ -12,18 +13,21 @@ import { Order } from '../../modals/order';
 })
 export class OrdersChartComponent implements OnInit {
   @Input() orders: Order[] = [];
+  @Input()chart!: Chart;
+
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
 
   constructor() {}
 
   ngOnInit() {
-    this.chartOptions = {
+        this.chartOptions = {
       chart: {
-        type: 'column',
+        type: this.chart?.type,
+        renderTo: this.chart.id
       },
       title: {
-        text: 'Expected Sales data',
+        text: this.chart?.name,
       },
       xAxis: {
         type: 'datetime',
@@ -70,5 +74,10 @@ export class OrdersChartComponent implements OnInit {
       item[0] = Date.parse(item[0]);
     })
     return data;
+  }
+
+  getContainer () {
+    const  Highcharts1: typeof Highcharts = Highcharts;
+    return Highcharts1;
   }
 }

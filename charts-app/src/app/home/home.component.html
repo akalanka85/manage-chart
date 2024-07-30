@@ -1,1 +1,3 @@
-<app-order-chart [orders]="orders"> </app-order-chart>
+@for (chart of this.chartStore.chartData(); track chart) {
+<app-order-chart [orders]="orders" [chart]="chart"> </app-order-chart>
+}

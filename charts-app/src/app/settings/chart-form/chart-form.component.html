@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Chart Details</h2>
+<mat-dialog-content>
+  <form [formGroup]="chartForm" (ngSubmit)="onSubmit()" class="flex flex-col">
+    <mat-form-field>
+      <mat-label>Id</mat-label>
+      <input matInput formControlName="id" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+      @if(chartForm.get('name')?.invalid) {
+      <mat-error>Name is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Type</mat-label>
+      <input matInput formControlName="type" />
+      @if(chartForm.get('type')?.invalid) {
+      <mat-error>Name is required</mat-error>
+      }
+    </mat-form-field>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onCancel()">Cancel</button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="chartForm.invalid"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</mat-dialog-content>
