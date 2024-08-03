@@ -1,5 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { OrderService } from './../../services/order.service';
+import { Component, inject, Inject, OnInit } from '@angular/core';
 import {
+  FormArray,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -13,6 +15,7 @@ import {
 } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { Chart } from '../../modals/chart';
+import { ChartStore } from '../../store/chart.store';
 
 @Component({
   selector: 'app-chart-form',
@@ -28,6 +31,8 @@ import { Chart } from '../../modals/chart';
 })
 export class ChartFormComponent implements OnInit {
   chartForm: FormGroup;
+  chartStore = inject(ChartStore);
+  orderService = inject(OrderService);
 
   constructor(
     private fb: FormBuilder,
@@ -38,11 +43,29 @@ export class ChartFormComponent implements OnInit {
       id: [data.id],
       name: [data.name, [Validators.required]],
       type: [data.type, [Validators.required]],
-      colors: [''],
+      colors: this.fb.array([]),
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.orderService.getData().subscribe((orders) => {
+      orders.forEach((order) => this.addColorItem(order.name));
+    });
+  }
+
+  addColorItem(name: string): void {
+    this.colors.push(
+      this.fb.group({
+        name: [name, Validators.required],
+        color: [this.getColor(name)],
+      })
+    );
+  }
+
+  getColor(name: string) {
+    const currentColor = this.data.colors.find((c) => c.name === name);
+    return currentColor ? currentColor.color : '#000';
+  }
 
   onSubmit() {
     if (this.chartForm.valid) {
@@ -52,5 +75,9 @@ export class ChartFormComponent implements OnInit {
 
   onCancel() {
     this.dialogRef.close();
+  }
+
+  get colors(): FormArray {
+    return this.chartForm.get('colors') as FormArray;
   }
 }

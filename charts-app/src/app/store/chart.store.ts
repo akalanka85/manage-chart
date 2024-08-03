@@ -7,8 +7,16 @@ export interface ChartState {
 
 const iniialChartState: ChartState = {
   chartData: [
-    { id: '1', name: 'Chart 1', type: 'bar', colors: [] },
-    { id: '2', name: 'Chart 2', type: 'spline', colors: [] },
+    { id: '1', name: 'Chart 1', type: 'bar', colors: [
+      { name: 'Apple', color: '#bf5f5f' },
+      { name: 'Orange', color: '#399627' },
+      { name: 'Banana', color: '#1621bb' },
+    ] },
+    { id: '2', name: 'Chart 2', type: 'spline', colors: [
+      { name: 'Apple', color: '#bf5fbc' },
+      { name: 'Orange', color: '#965c27' },
+      { name: 'Banana', color: '#16a0bb' },
+    ] },
   ],
 };
 

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import Highcharts, { SeriesOptionsType } from 'highcharts';
+import Highcharts, { color, SeriesOptionsType } from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { Order } from '../../modals/order';
 import { Chart } from '../../modals/chart';
@@ -13,18 +13,16 @@ import { Chart } from '../../modals/chart';
 })
 export class OrdersChartComponent implements OnInit {
   @Input() orders: Order[] = [];
-  @Input()chart!: Chart;
-
-  Highcharts: typeof Highcharts = Highcharts;
+  @Input() chart!: Chart;
   chartOptions: Highcharts.Options = {};
 
   constructor() {}
 
   ngOnInit() {
-        this.chartOptions = {
+    this.chartOptions = {
       chart: {
         type: this.chart?.type,
-        renderTo: this.chart.id
+        renderTo: this.chart.id,
       },
       title: {
         text: this.chart?.name,
@@ -32,9 +30,9 @@ export class OrdersChartComponent implements OnInit {
       xAxis: {
         type: 'datetime',
         title: {
-            text: 'Date'
-        }
-    },
+          text: 'Date',
+        },
+      },
       yAxis: {
         title: {
           text: 'Expected Sale',
@@ -52,7 +50,6 @@ export class OrdersChartComponent implements OnInit {
           },
         },
       },
-      colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
       series: this.getSeriesData(),
     };
   }
@@ -60,24 +57,30 @@ export class OrdersChartComponent implements OnInit {
   getSeriesData() {
     const seriesData: SeriesOptionsType[] = [];
     this.orders.map((order) => {
-      const series:any = {
+      const series: any = {
         name: order.name,
-        data: this.getConvertedData(order.data)
+        data: this.getConvertedData(order.data),
+        color: this.getColor(order.name),
       };
       seriesData.push(series);
     });
     return seriesData;
   }
 
+  getColor(name: string) {
+    const currentColor = this.chart.colors.find((c) => c.name === name);
+    return currentColor ? currentColor.color : '#000';
+  }
+
   getConvertedData(data: any) {
-    data.map((item:any[]) => {
+    data.map((item: any[]) => {
       item[0] = Date.parse(item[0]);
-    })
+    });
     return data;
   }
 
-  getContainer () {
-    const  Highcharts1: typeof Highcharts = Highcharts;
+  getContainer() {
+    const Highcharts1: typeof Highcharts = Highcharts;
     return Highcharts1;
   }
 }
