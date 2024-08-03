@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import Highcharts, { color, SeriesOptionsType } from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { Order } from '../../modals/order';
@@ -11,14 +11,20 @@ import { Chart } from '../../modals/chart';
   imports: [HighchartsChartModule],
   standalone: true,
 })
-export class OrdersChartComponent implements OnInit {
+export class OrdersChartComponent implements OnChanges  {
   @Input() orders: Order[] = [];
   @Input() chart!: Chart;
   chartOptions: Highcharts.Options = {};
 
   constructor() {}
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['orders']) {
+      this.setChartOptions();
+    }
+  }
+
+  setChartOptions() {
     this.chartOptions = {
       chart: {
         type: this.chart?.type,
@@ -74,7 +80,8 @@ export class OrdersChartComponent implements OnInit {
 
   getConvertedData(data: any) {
     data.map((item: any[]) => {
-      item[0] = Date.parse(item[0]);
+      //TODO: Need to chage the dateformat
+      // item[0] = Date.parse(item[0]);
     });
     return data;
   }

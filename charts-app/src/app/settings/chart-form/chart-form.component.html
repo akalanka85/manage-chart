@@ -3,7 +3,7 @@
   <form [formGroup]="chartForm" (ngSubmit)="onSubmit()" class="flex flex-col">
     <mat-form-field>
       <mat-label>Id</mat-label>
-      <input matInput formControlName="id" />
+      <input matInput formControlName="id"  class="custom-input"/>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
@@ -15,35 +15,42 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Type</mat-label>
-      <input matInput formControlName="type" />
+      <select matNativeControl required formControlName="type" >
+        @for (type of chartTypes; track type) {
+          <option [value]="type.value">{{type.name}}</option>
+        }
+      </select>
       @if(chartForm.get('type')?.invalid) {
-      <mat-error>Name is required</mat-error>
+      <mat-error>Type is required</mat-error>
       }
     </mat-form-field>
-    <ng-container formArrayName="colors">
-      <div class="flex flex-row gap-1 mb-4">
-        @for (item of colors.controls; track item; let i = $index) {
-        <div [formGroupName]="i" class="w-fit">
-          <label
-            for="hs-color-input"
-            class="block text-sm font-medium mb-2 dark:text-white"
-            ><input formControlName="name" readonly
-          /></label>
-          <input
-            type="color"
-            class="p-1 h-10 w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700"
-            id="hs-color-input"
-            value="#2563eb"
-            title="Choose your color"
-            formControlName="color"
-          />
+
+    <div class="p-2 border border-gray-200 rounded mb-2">
+      <h4 class="mb-2">Select series color</h4>
+      <ng-container formArrayName="colors">
+        <div class="flex flex-wrap gap-8 mb-4">
+          @for (item of colors.controls; track item; let i = $index) {
+          <div [formGroupName]="i" class="w-fit">
+            <label
+              for="hs-color-input"
+              class="block text-sm font-medium mb-2 dark:text-white"
+              >{{item.value.name}}</label>
+
+            <input
+              type="color"
+              class="p-0.5 h-10 w-14 shadow-lg cursor-pointer "
+              id="hs-color-input"
+              title="Click to Choose the series color"
+              formControlName="color"
+            />
+          </div>
+          }
         </div>
+      </ng-container>
+    </div>
 
-        }
-      </div>
-    </ng-container>
 
-    <div mat-dialog-actions>
+    <div mat-dialog-actions class="flex !justify-end">
       <button mat-button (click)="onCancel()">Cancel</button>
       <button
         mat-raised-button
