@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,18 +19,17 @@ import { MatIconModule } from '@angular/material/icon';
     MatDatepickerModule,
     MatNativeDateModule,
     ReactiveFormsModule,
-    MatIconModule
+    MatIconModule,
   ],
 })
 export class FilterComponent {
-
   dateFilterForm: FormGroup;
   @Output() applyFilter: EventEmitter<{}> = new EventEmitter();
 
   constructor(private fb: FormBuilder) {
     this.dateFilterForm = this.fb.group({
       fromDate: [''],
-      toDate: ['']
+      toDate: [''],
     });
   }
 
@@ -39,7 +38,6 @@ export class FilterComponent {
   }
 
   onSubmit(): void {
-      this.applyFilter.emit(this.dateFilterForm.value);
+    this.applyFilter.emit(this.dateFilterForm.value);
   }
-
 }

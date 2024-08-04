@@ -14,6 +14,7 @@ import { Chart } from '../../modals/chart';
 export class OrdersChartComponent implements OnChanges  {
   @Input() orders: Order[] = [];
   @Input() chart!: Chart;
+  Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
 
   constructor() {}
@@ -84,10 +85,5 @@ export class OrdersChartComponent implements OnChanges  {
       // item[0] = Date.parse(item[0]);
     });
     return data;
-  }
-
-  getContainer() {
-    const Highcharts1: typeof Highcharts = Highcharts;
-    return Highcharts1;
   }
 }

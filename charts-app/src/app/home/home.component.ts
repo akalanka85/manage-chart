@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Order } from '../modals/order';
 import { OrdersChartComponent } from './order-chart/orders-chart.component';
@@ -14,45 +14,49 @@ import { DatePipe } from '@angular/common';
   standalone: true,
   providers: [DatePipe],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
-  orders: Order[] = [];
-  fillteredOrders: Order[] = [];
+  datePipe: DatePipe = inject(DatePipe);
+  router: Router = inject(Router);
   chartStore = inject(ChartStore);
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private datePipe: DatePipe,
-    private router: Router
-  ) {
-    this.activatedRoute.data.subscribe((response: any) => {
+  orders: Order[] = [];
+  filteredOrders: Order[] = [];
+
+  constructor() {
+    this.subscribeToRouteData();
+  }
+
+  subscribeToRouteData(): void {
+    this.route.data.subscribe((response: any) => {
       this.orders = response.record;
-      this.fillteredOrders = response.record;
+      this.filteredOrders = response.record;
     });
   }
 
-  ngOnInit() {}
-
-  applyFilter(event: any) {
+  applyFilter(event: any): void {
     const { fromDate, toDate } = event;
     const formattedFromDate = this.datePipe.transform(fromDate, 'yyyy-MM-dd');
     const formattedToDate = this.datePipe.transform(toDate, 'yyyy-MM-dd');
     const deepCopyOrders: Order[] = JSON.parse(JSON.stringify(this.orders));
 
-    deepCopyOrders.forEach((order) => {
-      order.data = order.data.filter(([date, _]) => {
+    this.filteredOrders = deepCopyOrders.map((order) => ({
+      ...order,
+      data: order.data.filter(([date, _]) => {
         return (
           (!formattedFromDate || date >= formattedFromDate) &&
           (!formattedToDate || date <= formattedToDate)
         );
-      });
-    });
+      }),
+    }));
 
-    this.fillteredOrders = deepCopyOrders;
+    this.updateQueryParams(formattedFromDate, formattedToDate);
+  }
 
+  updateQueryParams(fromDate: string | null, toDate: string | null): void {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { fromDate: formattedFromDate, toDate: formattedToDate },
+      queryParams: { fromDate, toDate },
       queryParamsHandling: 'merge',
     });
   }

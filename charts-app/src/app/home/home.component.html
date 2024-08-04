@@ -5,7 +5,7 @@
 
 <div class="flex flex-wrap gap-2">
   @for (chart of chartStore.chartData(); track chart) {
-    <app-order-chart [orders]="fillteredOrders" [chart]="chart"> </app-order-chart>
+    <app-order-chart [orders]="filteredOrders" [chart]="chart"> </app-order-chart>
     }
 </div>
 

@@ -7,16 +7,26 @@ export interface ChartState {
 
 const iniialChartState: ChartState = {
   chartData: [
-    { id: '1', name: 'Bar', type: 'bar', colors: [
-      { name: 'Apple', color: '#bf5f5f' },
-      { name: 'Orange', color: '#399627' },
-      { name: 'Banana', color: '#1621bb' },
-    ] },
-    { id: '2', name: 'Spline', type: 'spline', colors: [
-      { name: 'Apple', color: '#bf5fbc' },
-      { name: 'Orange', color: '#965c27' },
-      { name: 'Banana', color: '#16a0bb' },
-    ] },
+    {
+      id: '1',
+      name: 'Bar',
+      type: 'bar',
+      colors: [
+        { name: 'Apple', color: '#bf5f5f' },
+        { name: 'Orange', color: '#399627' },
+        { name: 'Banana', color: '#1621bb' },
+      ],
+    },
+    {
+      id: '2',
+      name: 'Spline',
+      type: 'spline',
+      colors: [
+        { name: 'Apple', color: '#bf5fbc' },
+        { name: 'Orange', color: '#965c27' },
+        { name: 'Banana', color: '#16a0bb' },
+      ],
+    },
   ],
 };
 
@@ -29,9 +39,9 @@ export const ChartStore = signalStore(
       patchState(store, { chartData: updatedChart });
     },
     updateChart(chart: Chart) {
-      const updatedCharts = chartData()
-        .filter((c) => c.id !== chart.id)
-        .concat(chart);
+      const updatedCharts = chartData().map((c) =>
+        c.id === chart.id ? chart : c
+      );
       patchState(store, { chartData: updatedCharts });
     },
     removeChart(id: string) {

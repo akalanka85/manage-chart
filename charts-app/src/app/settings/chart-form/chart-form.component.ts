@@ -1,5 +1,5 @@
 import { OrderService } from './../../services/order.service';
-import { Component, inject, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, inject } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -16,6 +16,7 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { Chart } from '../../modals/chart';
 import { ChartStore } from '../../store/chart.store';
+import { environment } from '../../../environments/environments';
 
 @Component({
   selector: 'app-chart-form',
@@ -33,27 +34,30 @@ export class ChartFormComponent implements OnInit {
   chartForm: FormGroup;
   chartStore = inject(ChartStore);
   orderService = inject(OrderService);
-  chartTypes = [{name: 'Bar', value: 'bar'},
-    {name: 'Column', value: 'column'},
-    {name: 'Spline', value: 'spline'},
-    {name: 'Pie', value: 'pie'},
-    {name: 'Area', value: 'area'},
-  ];
+  chartTypes = environment.chartTypes;
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ChartFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Chart
   ) {
-    this.chartForm = this.fb.group({
-      id: [data.id],
-      name: [data.name, [Validators.required]],
-      type: [data.type, [Validators.required]],
+    this.chartForm = this.createForm(data);
+  }
+
+  ngOnInit(): void {
+    this.loadOrderData();
+  }
+
+  createForm(chartData: Chart): FormGroup {
+    return this.fb.group({
+      id: [chartData.id],
+      name: [chartData.name, Validators.required],
+      type: [chartData.type, Validators.required],
       colors: this.fb.array([]),
     });
   }
 
-  ngOnInit() {
+  loadOrderData(): void {
     this.orderService.getData().subscribe((orders) => {
       orders.forEach((order) => this.addColorItem(order.name));
     });
@@ -68,22 +72,21 @@ export class ChartFormComponent implements OnInit {
     );
   }
 
-  getColor(name: string) {
-    if(!this.data.colors) {
+  getColor(name: string): string {
+    if (!this.data.colors) {
       return '#000';
     }
     const currentColor = this.data.colors.find((c) => c.name === name);
     return currentColor ? currentColor.color : '#000';
   }
 
-  onSubmit() {
-    console.log(this.chartForm.value);
+  onSubmit(): void {
     if (this.chartForm.valid) {
       this.dialogRef.close(this.chartForm.value);
     }
   }
 
-  onCancel() {
+  onCancel(): void {
     this.dialogRef.close();
   }
 
