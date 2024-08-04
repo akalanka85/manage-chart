@@ -4,7 +4,8 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     colors: {
-      lightGreen: '#ddf0e8'
+      lightGreen: '#ddf0e8',
+      white: '#fff'
     },
     extend: {},
   },

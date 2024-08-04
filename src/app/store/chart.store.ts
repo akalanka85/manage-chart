@@ -27,6 +27,16 @@ const iniialChartState: ChartState = {
         { name: 'Banana', color: '#16a0bb' },
       ],
     },
+    {
+      id: '2',
+      name: 'Spline',
+      type: 'spline',
+      colors: [
+        { name: 'Apple', color: '#bf5fbc' },
+        { name: 'Orange', color: '#965c27' },
+        { name: 'Banana', color: '#16a0bb' },
+      ],
+    },
   ],
 };
 
