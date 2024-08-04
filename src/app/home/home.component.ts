@@ -1,23 +1,23 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Order } from '../modals/order';
 import { OrdersChartComponent } from './order-chart/orders-chart.component';
 import { ChartStore } from '../store/chart.store';
 import { FilterComponent } from './filter/filter.component';
 import { DatePipe } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [OrdersChartComponent, FilterComponent],
+  imports: [OrdersChartComponent, FilterComponent, MatButtonModule, RouterLink],
   standalone: true,
   providers: [DatePipe],
 })
 export class HomeComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   datePipe: DatePipe = inject(DatePipe);
-  router: Router = inject(Router);
   chartStore = inject(ChartStore);
 
   orders: Order[] = [];
@@ -34,6 +34,7 @@ export class HomeComponent {
     });
   }
 
+
   applyFilter(event: any): void {
     const { fromDate, toDate } = event;
     const formattedFromDate = this.datePipe.transform(fromDate, 'yyyy-MM-dd');
@@ -49,15 +50,6 @@ export class HomeComponent {
         );
       }),
     }));
-
-    this.updateQueryParams(formattedFromDate, formattedToDate);
   }
 
-  updateQueryParams(fromDate: string | null, toDate: string | null): void {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { fromDate, toDate },
-      queryParamsHandling: 'merge',
-    });
-  }
 }

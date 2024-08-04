@@ -88,7 +88,8 @@ export class ChartFormComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.dialogRef.close();
+    this.chartForm.reset();
+    this.dialogRef.close(false);
   }
 
   get colors(): FormArray {

@@ -1,12 +1,30 @@
-<div class="flex justify-end mb-2">
+@if(chartStore.chartData().length > 0) {
+<div class="flex justify-end mb-8">
   <app-filter (applyFilter)="applyFilter($event)"></app-filter>
-
 </div>
 
 <div class="flex flex-wrap gap-2">
   @for (chart of chartStore.chartData(); track chart) {
-    <app-order-chart [orders]="filteredOrders" [chart]="chart"> </app-order-chart>
-    }
+  <app-order-chart [orders]="filteredOrders" [chart]="chart"> </app-order-chart>
+  }
+</div>
+} @else {
+<div class="flex flex-col items-center mt-8">
+  <img
+    src="../../assets/images/not-found.png"
+    class="h-24 w-24 mb-4"
+    alt="No charts"
+  />
+  <h2>No results to display</h2>
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    routerLink="/settings"
+    class="ms-2"
+  >
+    Add Chart
+  </button>
 </div>
 
-
+}
