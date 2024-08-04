@@ -29,8 +29,9 @@ export class HomeComponent {
 
   subscribeToRouteData(): void {
     this.route.data.subscribe((response: any) => {
-      this.orders = response.record;
-      this.filteredOrders = response.record;
+      this.orders = response.record.data;
+      this.filteredOrders = response.record.data;
+      console.log(this.orders);
     });
   }
 

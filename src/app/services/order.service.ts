@@ -13,6 +13,6 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
   getData(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.baseUrl}/data`);
+    return this.http.get<Order[]>(`${this.baseUrl}`);
   }
 }
