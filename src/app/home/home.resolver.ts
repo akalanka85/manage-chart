@@ -9,11 +9,11 @@ import { catchError } from 'rxjs/operators';
 import { Order } from '../modals/order';
 import { OrderService } from '../services/order.service';
 
-export const HomeResolver: ResolveFn<any> = (
+export const HomeResolver: ResolveFn<Order[]> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot,
   orderService: OrderService = inject(OrderService)
-): Observable<any> => {
+): Observable<Order[]> => {
   return orderService.getData().pipe(
     catchError((error) => {
       console.error('Error fetching data', error);

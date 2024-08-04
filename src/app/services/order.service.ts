@@ -12,7 +12,7 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
-  getData(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}`);
+  getData(): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.baseUrl}`);
   }
 }

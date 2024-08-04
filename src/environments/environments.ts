@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/data',
+  apiUrl: 'https://ab57b392-cc1b-4e89-af12-853330487f6a.mock.pstmn.io/data',
   chartTypes: [{name: 'Bar', value: 'bar'},
     {name: 'Column', value: 'column'},
     {name: 'Spline', value: 'spline'},

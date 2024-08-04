@@ -60,8 +60,7 @@ export class ChartFormComponent implements OnInit {
 
   loadOrderData(): void {
     this.orderService.getData().subscribe((orders) => {
-      const allOrders:Order[] = orders.data;
-      allOrders.forEach((order) => this.addColorItem(order.name));
+      orders.forEach((order) => this.addColorItem(order.name));
     });
   }
 
