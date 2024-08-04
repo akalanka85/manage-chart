@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Chart } from '../../modals/chart';
 import { ChartStore } from '../../store/chart.store';
 import { environment } from '../../../environments/environments';
+import { Order } from '../../modals/order';
 
 @Component({
   selector: 'app-chart-form',
@@ -59,7 +60,8 @@ export class ChartFormComponent implements OnInit {
 
   loadOrderData(): void {
     this.orderService.getData().subscribe((orders) => {
-      orders.forEach((order) => this.addColorItem(order.name));
+      const allOrders:Order[] = orders.data;
+      allOrders.forEach((order) => this.addColorItem(order.name));
     });
   }
 
