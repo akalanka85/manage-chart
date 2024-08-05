@@ -1,4 +1,4 @@
 export interface IOrder {
   name: string;
-  data: any[];
+  data: [string, number][];
 }

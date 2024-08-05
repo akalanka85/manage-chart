@@ -31,7 +31,7 @@ export class SettingsComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
+      if (!!result) {
         this.handleDialogResult(result);
       }
     });
@@ -46,7 +46,7 @@ export class SettingsComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
+      if (!!result) {
         this.chartStore.removeChart(id);
         this.displayMessage('Chart deleted successfully.');
       }
@@ -72,7 +72,7 @@ export class SettingsComponent {
   }
 
   handleDialogResult(result: IChart): void {
-    if (result.id) {
+    if (!!result.id) {
       this.chartStore.updateChart(result);
       this.displayMessage('Chart updated successfully.');
     } else {

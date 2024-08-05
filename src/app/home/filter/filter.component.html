@@ -64,8 +64,14 @@
         </mat-form-field>
       </div>
 
+      @if(dateFilterForm.errors?.dateRangeInvalid){
+      <div class="text-red text-sm mt-2 mb-2">
+        The from date must be earlier than or equal to the to date.
+      </div>
+      }
+
       <div class="flex justify-end">
-        <button mat-raised-button color="primary" type="submit">Submit</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="dateFilterForm.invalid">Submit</button>
       </div>
     </form>
   </mat-expansion-panel>

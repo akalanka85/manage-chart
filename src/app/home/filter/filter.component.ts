@@ -15,6 +15,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { DatePipe } from '@angular/common';
+import { dateRangeValidator } from '../../validators/date-range.validator';
 
 @Component({
   selector: 'app-filter',
@@ -34,7 +35,7 @@ import { DatePipe } from '@angular/common';
 })
 export class FilterComponent {
   dateFilterForm: FormGroup;
-  @Output() applyFilter = new EventEmitter<{}>();
+  @Output() applyFilter = new EventEmitter<{ fromDate: string; toDate: string }>();
   @ViewChild(MatAccordion) accordion!: MatAccordion;
   readonly panelOpenState = signal(false);
   datePipe: DatePipe = inject(DatePipe);
@@ -43,7 +44,7 @@ export class FilterComponent {
     this.dateFilterForm = this.fb.group({
       fromDate: [''],
       toDate: [''],
-    });
+    }, { validator: dateRangeValidator() });
   }
 
   clearDate(name: string): void {

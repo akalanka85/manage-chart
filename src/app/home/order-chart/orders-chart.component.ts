@@ -91,10 +91,14 @@ export class OrdersChartComponent implements OnChanges {
   getSeriesData(): SeriesOptionsType[] {
     return this.orders.map((order) => ({
       name: order.name,
-      data: order.data,
+      data: this.orderByDate(order.data),
       color: this.getColor(order.name),
       type: this.chart?.type,
     }));
+  }
+
+  orderByDate(data: [string, number][]): [string, number][] {
+    return data.sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime());
   }
 
   getColor(name: string): string {

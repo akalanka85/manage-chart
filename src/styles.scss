@@ -1,7 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+@use '@angular/material' as mat;
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// Override mat colors to match with the theme
+.mat-mdc-raised-button:not(:disabled) {
+  background-color: #4c9988 !important;
+}
+
+.mat-mdc-button.mat-primary {
+  color: #4c9988 !important;
+}
+

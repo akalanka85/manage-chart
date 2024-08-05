@@ -40,7 +40,7 @@ export class HomeComponent {
     });
   }
 
-  applyFilter(event: any): void {
+  applyFilter(event: { fromDate: string; toDate: string }): void {
     const { fromDate, toDate } = event;
     const formattedFromDate = this.datePipe.transform(fromDate, 'yyyy-MM-dd');
     const formattedToDate = this.datePipe.transform(toDate, 'yyyy-MM-dd');
