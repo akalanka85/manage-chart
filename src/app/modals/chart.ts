@@ -1,11 +1,13 @@
-export interface Chart {
+export interface IChart {
     id: string;
     name: string;
-    type: string;
-    colors: SeriesColor[];
+    type: ChartType;
+    colors: ISeriesColor[];
 }
 
-export interface SeriesColor {
+export interface ISeriesColor {
   name: string;
   color: string;
 }
+
+export type ChartType = 'column' | 'spline' | 'pie' | 'bar';

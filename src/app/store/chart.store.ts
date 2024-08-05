@@ -1,8 +1,8 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { Chart } from '../modals/chart';
+import { IChart } from '../modals/chart';
 
 export interface ChartState {
-  chartData: Chart[];
+  chartData: IChart[];
 }
 
 const iniialChartState: ChartState = {
@@ -26,17 +26,7 @@ const iniialChartState: ChartState = {
         { name: 'Orange', color: '#965c27' },
         { name: 'Banana', color: '#16a0bb' },
       ],
-    },
-    {
-      id: '2',
-      name: 'Spline',
-      type: 'spline',
-      colors: [
-        { name: 'Apple', color: '#bf5fbc' },
-        { name: 'Orange', color: '#965c27' },
-        { name: 'Banana', color: '#16a0bb' },
-      ],
-    },
+    }
   ],
 };
 
@@ -44,11 +34,11 @@ export const ChartStore = signalStore(
   { providedIn: 'root' },
   withState(iniialChartState),
   withMethods(({ chartData, ...store }) => ({
-    addToList(chart: Chart) {
+    addToList(chart: IChart) {
       const updatedChart = [...chartData(), chart];
       patchState(store, { chartData: updatedChart });
     },
-    updateChart(chart: Chart) {
+    updateChart(chart: IChart) {
       const updatedCharts = chartData().map((c) =>
         c.id === chart.id ? chart : c
       );

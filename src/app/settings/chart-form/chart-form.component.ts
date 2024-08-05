@@ -14,10 +14,9 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
-import { Chart } from '../../modals/chart';
+import { IChart } from '../../modals/chart';
 import { ChartStore } from '../../store/chart.store';
 import { environment } from '../../../environments/environments';
-import { Order } from '../../modals/order';
 
 @Component({
   selector: 'app-chart-form',
@@ -40,7 +39,7 @@ export class ChartFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ChartFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Chart
+    @Inject(MAT_DIALOG_DATA) public data: IChart
   ) {
     this.chartForm = this.createForm(data);
   }
@@ -49,7 +48,7 @@ export class ChartFormComponent implements OnInit {
     this.loadOrderData();
   }
 
-  createForm(chartData: Chart): FormGroup {
+  createForm(chartData: IChart): FormGroup {
     return this.fb.group({
       id: [chartData.id],
       name: [chartData.name, Validators.required],

@@ -1,6 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { IConfirmationMessage } from '../../modals/confirmationMessage';
 
 @Component({
   selector: 'app-confirmation-message',
@@ -10,9 +15,10 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
   imports: [MatDialogModule, MatButtonModule],
 })
 export class ConfirmationMessageComponent {
-  constructor(public dialogRef: MatDialogRef<ConfirmationMessageComponent>,  @Inject(MAT_DIALOG_DATA) public data: any) {
-    console.log(data)
-  }
+  constructor(
+    public dialogRef: MatDialogRef<ConfirmationMessageComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: IConfirmationMessage
+  ) {}
 
   onConfirm(): void {
     this.dialogRef.close(true);

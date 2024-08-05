@@ -42,14 +42,10 @@
           ></mat-datepicker-toggle>
           <mat-datepicker #fromPicker></mat-datepicker>
           @if(!!dateFilterForm.value.fromDate) {
-          <button
-            mat-icon-button
-            matSuffix
-            (click)="clearDate('fromDate')"
-          >
+          <button mat-icon-button matSuffix (click)="clearDate('fromDate')">
             <mat-icon>clear</mat-icon>
           </button>
-        }
+          }
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="mt-2 sm:mt-0">
@@ -61,14 +57,10 @@
           ></mat-datepicker-toggle>
           <mat-datepicker #toPicker></mat-datepicker>
           @if(!!dateFilterForm.value.toDate) {
-          <button
-            mat-icon-button
-            matSuffix
-            (click)="clearDate('toDate')"
-          >
+          <button mat-icon-button matSuffix (click)="clearDate('toDate')">
             <mat-icon>clear</mat-icon>
           </button>
-        }
+          }
         </mat-form-field>
       </div>
 

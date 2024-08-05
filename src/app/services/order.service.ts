@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Order } from '../modals/order';
+import { IOrder } from '../modals/order';
 import { environment } from '../../environments/environments';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
-  getData(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.baseUrl}`);
+  getData(): Observable<IOrder[]> {
+    return this.http.get<IOrder[]>(`${this.baseUrl}`);
   }
 }

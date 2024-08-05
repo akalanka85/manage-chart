@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,11 +13,8 @@ import { FooterComponent } from '../footer/footer.component';
   standalone: true,
   imports: [RouterOutlet, MatToolbarModule, MatIconModule, HeaderComponent, FooterComponent],
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent {
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

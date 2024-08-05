@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ChartFormComponent } from './chart-form/chart-form.component';
-import { Chart } from '../modals/chart';
+import { IChart } from '../modals/chart';
 import { ConfirmationMessageComponent } from '../shared/confirmation-message/confirmation-message.component';
 import { environment } from '../../environments/environments';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -24,7 +24,7 @@ export class SettingsComponent {
 
   constructor(public dialog: MatDialog, private snackBar: MatSnackBar) {}
 
-  openUpdateDialog(chart: Chart): void {
+  openUpdateDialog(chart: IChart): void {
     const dialogRef = this.dialog.open(ChartFormComponent, {
       width: '600px',
       data: chart,
@@ -39,7 +39,7 @@ export class SettingsComponent {
 
   openDeleteConfirmation(id: string): void {
     const dialogRef = this.dialog.open(ConfirmationMessageComponent, {
-      data: {
+      data:  {
         message: 'Are you sure you want to delete this chart?',
         title: 'Delete Chart',
       },
@@ -54,7 +54,7 @@ export class SettingsComponent {
   }
 
   addChart(): void {
-    this.openUpdateDialog({} as Chart);
+    this.openUpdateDialog({} as IChart);
   }
 
   generateRandomId(): number {
@@ -71,7 +71,7 @@ export class SettingsComponent {
     return this.chartTypes.find((t) => t.value === type)?.name;
   }
 
-  handleDialogResult(result: Chart): void {
+  handleDialogResult(result: IChart): void {
     if (result.id) {
       this.chartStore.updateChart(result);
       this.displayMessage('Chart updated successfully.');
