@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Data, RouterLink } from '@angular/router';
 import { IOrder } from '../modals/order';
 import { OrdersChartComponent } from './order-chart/orders-chart.component';
 import { ChartStore } from '../store/chart.store';
@@ -34,9 +34,9 @@ export class HomeComponent {
   }
 
   private subscribeToRouteData(): void {
-    this.route.data.subscribe(() => {
-      this.orders = this.route.snapshot.data.record;
-      this.filteredOrders = this.route.snapshot.data.record;
+    this.route.data.subscribe((data: Data) => {
+      this.orders = data.record;
+      this.filteredOrders = data.record;
     });
   }
 

@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import Highcharts, { SeriesOptionsType } from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
+import {MatCardModule} from '@angular/material/card';
 import { IOrder } from '../../modals/order';
 import { IChart } from '../../modals/chart';
 import { DatePipe } from '@angular/common';
@@ -16,7 +17,7 @@ import { DatePipe } from '@angular/common';
   selector: 'app-order-chart',
   templateUrl: './orders-chart.component.html',
   styleUrls: ['./orders-chart.component.scss'],
-  imports: [HighchartsChartModule],
+  imports: [HighchartsChartModule, MatCardModule],
   standalone: true,
 })
 export class OrdersChartComponent implements OnChanges {
@@ -30,7 +31,6 @@ export class OrdersChartComponent implements OnChanges {
   constructor() {
 }
 
-  //This is only use for the manual resizing using browser development mode.
   @HostListener('window:resize', ['$event'])
   onResize(): void {
     this.updateChartSize();
@@ -45,7 +45,7 @@ export class OrdersChartComponent implements OnChanges {
   setChartOptions() {
     this.chartOptions = {
       chart: {
-        type: this.chart?.type,
+        type: this.chart.type,
         renderTo: this.chart.id,
         width: this.getChartWidth(),
       },
@@ -53,7 +53,7 @@ export class OrdersChartComponent implements OnChanges {
         enabled: false,
       },
       title: {
-        text: this.chart?.name,
+        text: this.chart.name,
       },
       xAxis: {
         type: 'category',
@@ -93,7 +93,7 @@ export class OrdersChartComponent implements OnChanges {
       name: order.name,
       data: this.orderByDate(order.data),
       color: this.getColor(order.name),
-      type: this.chart?.type,
+      type: this.chart.type,
     }));
   }
 

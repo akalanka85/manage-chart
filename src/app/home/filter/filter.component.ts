@@ -13,9 +13,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
-import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
-import { DatePipe } from '@angular/common';
+import { MatMenuModule, MatMenuTrigger} from '@angular/material/menu';
+import { CommonModule } from '@angular/common';
 import { dateRangeValidator } from '../../validators/date-range.validator';
+import { MatChipsModule} from '@angular/material/chips';
+
 
 @Component({
   selector: 'app-filter',
@@ -23,6 +25,7 @@ import { dateRangeValidator } from '../../validators/date-range.validator';
   styleUrls: ['./filter.component.scss'],
   standalone: true,
   imports: [
+    CommonModule,
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
@@ -30,15 +33,15 @@ import { dateRangeValidator } from '../../validators/date-range.validator';
     MatNativeDateModule,
     ReactiveFormsModule,
     MatIconModule,
-    MatExpansionModule,
+    MatMenuModule,
+    MatChipsModule
   ],
 })
 export class FilterComponent {
   dateFilterForm: FormGroup;
   @Output() applyFilter = new EventEmitter<{ fromDate: string; toDate: string }>();
-  @ViewChild(MatAccordion) accordion!: MatAccordion;
+  @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
   readonly panelOpenState = signal(false);
-  datePipe: DatePipe = inject(DatePipe);
 
   constructor(private fb: FormBuilder) {
     this.dateFilterForm = this.fb.group({
@@ -47,11 +50,23 @@ export class FilterComponent {
     }, { validator: dateRangeValidator() });
   }
 
-  clearDate(name: string): void {
+  clearDate(name: string, event: MouseEvent): void {
+    event.stopPropagation();
     this.dateFilterForm.get(name)?.reset();
+  }
+
+  removeChip(name: string): void {
+    this.dateFilterForm.get(name)?.reset();
+    this.applyFilter.emit(this.dateFilterForm.value);
+  }
+
+  clearForm(): void {
+    this.dateFilterForm.reset();
+    this.menuTrigger.closeMenu();
   }
 
   onSubmit(): void {
     this.applyFilter.emit(this.dateFilterForm.value);
+    this.menuTrigger.closeMenu();
   }
 }
