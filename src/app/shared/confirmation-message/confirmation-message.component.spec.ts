@@ -1,28 +1,21 @@
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-
+import { TestBed } from '@angular/core/testing';
 import { ConfirmationMessageComponent } from './confirmation-message.component';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 describe('ConfirmationMessageComponent', () => {
-  let component: ConfirmationMessageComponent;
-  let fixture: ComponentFixture<ConfirmationMessageComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ConfirmationMessageComponent ]
-    })
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ConfirmationMessageComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ConfirmationMessageComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: {} }, // Mock MatDialogRef
+        { provide: MAT_DIALOG_DATA, useValue: {} }, // Mock MAT_DIALOG_DATA (if needed)
+      ],
+    }).compileComponents();
   });
 
   it('should create', () => {
+    const fixture = TestBed.createComponent(ConfirmationMessageComponent);
+    const component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
 });
