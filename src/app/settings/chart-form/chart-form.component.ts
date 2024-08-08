@@ -1,5 +1,5 @@
 import { OrderService } from './../../services/order.service';
-import { Component, Inject, OnInit, inject } from '@angular/core';
+import { Component, Inject, OnDestroy, inject } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { IChart } from '../../modals/chart';
 import { ChartStore } from '../../store/chart.store';
 import { environment } from '../../../environments/environments';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chart-form',
@@ -30,11 +31,12 @@ import { environment } from '../../../environments/environments';
     MatInputModule,
   ],
 })
-export class ChartFormComponent implements OnInit {
+export class ChartFormComponent implements OnDestroy {
   chartForm: FormGroup;
   chartStore = inject(ChartStore);
   orderService = inject(OrderService);
   chartTypes = environment.chartTypes;
+  orderSubscription: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -42,10 +44,9 @@ export class ChartFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: IChart
   ) {
     this.chartForm = this.createForm(data);
-  }
-
-  ngOnInit(): void {
-    this.loadOrderData();
+    this.orderSubscription = this.orderService.getData().subscribe((orders) => {
+      orders.forEach((order) => this.addColorItem(order.name));
+    });
   }
 
   createForm(chartData: IChart): FormGroup {
@@ -54,12 +55,6 @@ export class ChartFormComponent implements OnInit {
       name: [chartData.name, Validators.required],
       type: [chartData.type, Validators.required],
       colors: this.fb.array([]),
-    });
-  }
-
-  loadOrderData(): void {
-    this.orderService.getData().subscribe((orders) => {
-      orders.forEach((order) => this.addColorItem(order.name));
     });
   }
 
@@ -89,6 +84,12 @@ export class ChartFormComponent implements OnInit {
   onCancel(): void {
     this.chartForm.reset();
     this.dialogRef.close(false);
+  }
+
+  ngOnDestroy(): void {
+    if (this.orderSubscription) {
+      this.orderSubscription.unsubscribe();
+    }
   }
 
   get colors(): FormArray {

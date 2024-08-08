@@ -3,7 +3,6 @@ import { FilterComponent } from './filter.component';
 import { FormBuilder } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EventEmitter } from '@angular/core';
 
 describe('FilterComponent', () => {
   let component: FilterComponent;

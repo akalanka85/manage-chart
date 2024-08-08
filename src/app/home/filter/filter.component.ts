@@ -1,7 +1,6 @@
 import {
   Component,
   EventEmitter,
-  inject,
   Output,
   signal,
   ViewChild,
@@ -13,11 +12,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule, MatMenuTrigger} from '@angular/material/menu';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
 import { dateRangeValidator } from '../../validators/date-range.validator';
-import { MatChipsModule} from '@angular/material/chips';
-
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-filter',
@@ -34,20 +32,30 @@ import { MatChipsModule} from '@angular/material/chips';
     ReactiveFormsModule,
     MatIconModule,
     MatMenuModule,
-    MatChipsModule
+    MatChipsModule,
   ],
 })
 export class FilterComponent {
   dateFilterForm: FormGroup;
-  @Output() applyFilter = new EventEmitter<{ fromDate: string; toDate: string }>();
+  @Output() applyFilter = new EventEmitter<{
+    fromDate: string;
+    toDate: string;
+  }>();
   @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
   readonly panelOpenState = signal(false);
 
   constructor(private fb: FormBuilder) {
-    this.dateFilterForm = this.fb.group({
-      fromDate: [''],
-      toDate: [''],
-    }, { validator: dateRangeValidator() });
+    this.dateFilterForm = this.createFormGroup();
+  }
+
+  createFormGroup(): FormGroup {
+    return this.fb.group(
+      {
+        fromDate: [''],
+        toDate: [''],
+      },
+      { validator: dateRangeValidator() }
+    );
   }
 
   clearDate(name: string, event: MouseEvent): void {

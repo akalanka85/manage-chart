@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Data, RouterLink } from '@angular/router';
 import { IOrder } from '../modals/order';
 import { OrdersChartComponent } from './order-chart/orders-chart.component';
@@ -6,35 +6,27 @@ import { ChartStore } from '../store/chart.store';
 import { FilterComponent } from './filter/filter.component';
 import { DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [
-    OrdersChartComponent,
-    FilterComponent,
-    MatButtonModule,
-    RouterLink,
-  ],
+  imports: [OrdersChartComponent, FilterComponent, MatButtonModule, RouterLink],
   standalone: true,
   providers: [DatePipe],
 })
-
-export class HomeComponent {
+export class HomeComponent implements OnDestroy {
   route: ActivatedRoute = inject(ActivatedRoute);
   datePipe: DatePipe = inject(DatePipe);
   chartStore = inject(ChartStore);
+  routeDataSubscription: Subscription;
 
   orders: IOrder[] = [];
   filteredOrders: IOrder[] = [];
 
   constructor() {
-    this.subscribeToRouteData();
-  }
-
-  private subscribeToRouteData(): void {
-    this.route.data.subscribe((data: Data) => {
+    this.routeDataSubscription = this.route.data.subscribe((data: Data) => {
       this.orders = data.record;
       this.filteredOrders = data.record;
     });
@@ -44,18 +36,24 @@ export class HomeComponent {
     const { fromDate, toDate } = event;
     const formattedFromDate = this.datePipe.transform(fromDate, 'yyyy-MM-dd');
     const formattedToDate = this.datePipe.transform(toDate, 'yyyy-MM-dd');
-    this.filteredOrders = this.filterOrdersByDate(formattedFromDate, formattedToDate);
+    this.filteredOrders = this.filterOrdersByDate(
+      formattedFromDate,
+      formattedToDate
+    );
   }
 
-  private filterOrdersByDate(fromDate: string | null, toDate: string | null): IOrder[] {
+  filterOrdersByDate(fromDate: string | null, toDate: string | null): IOrder[] {
     return this.orders.map((order) => ({
       ...order,
       data: order.data.filter(([date, _]) => {
-        return (
-          (!fromDate || date >= fromDate) &&
-          (!toDate || date <= toDate)
-        );
+        return (!fromDate || date >= fromDate) && (!toDate || date <= toDate);
       }),
     }));
+  }
+
+  ngOnDestroy(): void {
+    if (this.routeDataSubscription) {
+      this.routeDataSubscription.unsubscribe();
+    }
   }
 }

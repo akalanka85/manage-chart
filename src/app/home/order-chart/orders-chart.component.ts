@@ -1,17 +1,15 @@
 import {
   Component,
   HostListener,
-  inject,
   Input,
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
 import Highcharts, { SeriesOptionsType } from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { IOrder } from '../../modals/order';
 import { IChart } from '../../modals/chart';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-order-chart',
@@ -23,26 +21,23 @@ import { DatePipe } from '@angular/common';
 export class OrdersChartComponent implements OnChanges {
   @Input() orders: IOrder[] = [];
   @Input() chart!: IChart;
-
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
-  datePipe: DatePipe = inject(DatePipe);
 
-  constructor() {
-}
+  constructor() {}
 
   @HostListener('window:resize', ['$event'])
   onResize(): void {
     this.updateChartSize();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['orders']) {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.orders?.currentValue) {
       this.setChartOptions();
     }
   }
 
-  setChartOptions() {
+  setChartOptions(): void {
     this.chartOptions = {
       chart: {
         type: this.chart.type,
@@ -98,7 +93,9 @@ export class OrdersChartComponent implements OnChanges {
   }
 
   orderByDate(data: [string, number][]): [string, number][] {
-    return data.sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime());
+    return data.sort(
+      (a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime()
+    );
   }
 
   getColor(name: string): string {
