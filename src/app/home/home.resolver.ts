@@ -8,15 +8,17 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { IOrder } from '../modals/order';
 import { OrderService } from '../services/order.service';
+import { NotificationService } from '../services/notification.service';
 
 export const HomeResolver: ResolveFn<IOrder[]> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot,
-  orderService: OrderService = inject(OrderService)
+  orderService: OrderService = inject(OrderService),
+  notificationService: NotificationService = inject(NotificationService)
 ): Observable<IOrder[]> => {
   return orderService.getData().pipe(
     catchError((error) => {
-      console.error('Error fetching data', error);
+      notificationService.showNotification('Unexpected error occurred.');
       return of([]);
     })
   );

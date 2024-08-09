@@ -3,26 +3,27 @@ import { Component, inject } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ChartFormComponent } from './chart-form/chart-form.component';
 import { IChart } from '../modals/chart';
 import { ConfirmationMessageComponent } from '../shared/confirmation-message/confirmation-message.component';
 import { environment } from '../../environments/environments';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
   standalone: true,
-  imports: [MatTableModule, MatIconModule, MatSnackBarModule, MatTooltipModule],
+  imports: [MatTableModule, MatIconModule, MatTooltipModule],
 })
 export class SettingsComponent {
   chartStore = inject(ChartStore);
+  notificationService: NotificationService = inject(NotificationService);
   displayedColumns: string[] = ['name', 'type', 'actions'];
   chartTypes = environment.chartTypes;
 
-  constructor(public dialog: MatDialog, private snackBar: MatSnackBar) {}
+  constructor(public dialog: MatDialog) {}
 
   openUpdateDialog(chart: IChart): void {
     const dialogRef = this.dialog.open(ChartFormComponent, {
@@ -39,7 +40,7 @@ export class SettingsComponent {
 
   openDeleteConfirmation(id: string): void {
     const dialogRef = this.dialog.open(ConfirmationMessageComponent, {
-      data:  {
+      data: {
         message: 'Are you sure you want to delete this chart?',
         title: 'Delete Chart',
       },
@@ -48,7 +49,9 @@ export class SettingsComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (!!result) {
         this.chartStore.removeChart(id);
-        this.displayMessage('Chart deleted successfully.');
+        this.notificationService.showNotification(
+          'Chart deleted successfully.'
+        );
       }
     });
   }
@@ -61,12 +64,6 @@ export class SettingsComponent {
     return Math.floor(Math.random() * 1000) + 1;
   }
 
-  displayMessage(message: string): void {
-    this.snackBar.open(message, 'Close', {
-      duration: 3000,
-    });
-  }
-
   getChartType(type: string): string | undefined {
     return this.chartTypes.find((t) => t.value === type)?.name;
   }
@@ -74,11 +71,11 @@ export class SettingsComponent {
   handleDialogResult(result: IChart): void {
     if (!!result.id) {
       this.chartStore.updateChart(result);
-      this.displayMessage('Chart updated successfully.');
+      this.notificationService.showNotification('Chart updated successfully.');
     } else {
       result.id = this.generateRandomId().toString();
       this.chartStore.addToList(result);
-      this.displayMessage('Chart added successfully.');
+      this.notificationService.showNotification('Chart added successfully.');
     }
   }
 }
