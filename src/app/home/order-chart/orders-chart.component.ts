@@ -10,6 +10,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { MatCardModule } from '@angular/material/card';
 import { IOrder } from '../../modals/order';
 import { IChart } from '../../modals/chart';
+import { environment } from '../../../environments/environments';
 
 @Component({
   selector: 'app-order-chart',
@@ -70,7 +71,7 @@ export class OrdersChartComponent implements OnChanges {
         rules: [
           {
             condition: {
-              maxWidth: 500,
+              maxWidth: environment.defaultChartWidth,
             },
             chartOptions: {},
           },
@@ -80,7 +81,9 @@ export class OrdersChartComponent implements OnChanges {
   }
 
   getChartWidth(): number {
-    return window.innerWidth < 1240 ? window.innerWidth - 50 : 600;
+    return window.innerWidth < (environment.defaultChartWidth  * 2) + 40
+      ? window.innerWidth - 50
+      : environment.defaultChartWidth;
   }
 
   getSeriesData(): SeriesOptionsType[] {
@@ -107,7 +110,11 @@ export class OrdersChartComponent implements OnChanges {
     const innerWidth = window.innerWidth - 50;
     const chart = Highcharts.charts[0];
     if (chart && chart.options.chart) {
-      chart.setSize(innerWidth > 600 ? 600 : innerWidth);
+      chart.setSize(
+        innerWidth > environment.defaultChartWidth
+          ? environment.defaultChartWidth
+          : innerWidth
+      );
     }
   }
 }

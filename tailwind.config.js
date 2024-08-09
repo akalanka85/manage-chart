@@ -4,10 +4,11 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     colors: {
-      lightGreen: '#ddf0e8',
-      darkGreen: '#4c9988',
+      lightGreen: '#e0f2f1',
+      darkGreen: '#009688',
       white: '#fff',
       red: '#ef4444',
+      gray: '#d1d0d0',
     },
     extend: {},
   },

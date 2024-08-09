@@ -1,6 +1,6 @@
 <div class="flex items-center gap-2 flex-wrap">
   @if(!!dateFilterForm.value.fromDate) {
-  <mat-chip-row (removed)="removeChip('fromDate')" class="!bg-lightGreen">
+  <mat-chip-row (removed)="removeChip('fromDate')" class="!bg-lightGreen border border-darkGreen">
     <strong>From:</strong>
     {{ dateFilterForm.value.fromDate | date : "yyyy-MM-dd" }}
     <button matChipRemove [attr.aria-label]="'Remove filter'">
@@ -8,7 +8,7 @@
     </button>
   </mat-chip-row>
   } @if(!!dateFilterForm.value.toDate) {
-  <mat-chip-row (removed)="removeChip('toDate')" class="!bg-lightGreen">
+  <mat-chip-row (removed)="removeChip('toDate')" class="!bg-lightGreen border border-darkGreen">
     <strong>To:</strong>
     {{ dateFilterForm.value.toDate | date : "yyyy-MM-dd" }}
     <button matChipRemove [attr.aria-label]="'Remove filter'">

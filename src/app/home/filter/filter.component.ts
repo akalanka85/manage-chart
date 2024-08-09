@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   Output,
-  signal,
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -42,7 +41,6 @@ export class FilterComponent {
     toDate: string;
   }>();
   @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
-  readonly panelOpenState = signal(false);
 
   constructor(private fb: FormBuilder) {
     this.dateFilterForm = this.createFormGroup();
