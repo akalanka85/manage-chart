@@ -6,6 +6,15 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
+## JSON server
+
+To run and configure the local JSON-server API please follow the steps below.
+
+1. Open the terminal in npm run start:mock command.
+2. Open the environments.ts file
+3. Change apiUrl to the http://localhost:3000/data.
+4. Open a new terminal and run the npm start command.
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
